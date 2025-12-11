@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Page introuvable | {{ parent() }}{% endblock %}
+
+{% block body %}
+<div class="flex items-center justify-center min-h-screen bg-white">
+    <div class="text-center px-4">
+        <h1 class="text-9xl font-bold text-red-600 mb-6">404</h1>
+        <h2 class="text-3xl font-semibold text-slate-900 mb-4">OOPS! Cette page n'existe pas</h2>
+        <p class="text-slate-600 mb-6">Il semblerait que vous soyez perdu…</p>
+        <a href="{{ path('app_home') }}" class="inline-block bg-red-600 text-white font-semibold px-6 py-3 rounded-lg hover:bg-red-700 transition duration-300">
+            Retour à l’accueil
+        </a>
+        <div class="mt-10">
+            <img src="{{ asset('images/404-illustration.svg') }}" alt="404 illustration" class="mx-auto w-96">
+        </div>
+    </div>
+</div>
+{% endblock %}

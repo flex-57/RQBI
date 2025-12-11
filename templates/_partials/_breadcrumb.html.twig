@@ -1,0 +1,31 @@
+<nav aria-label="Breadcrumb" class="py-6 w-6xl px-4 sm:px-6 lg:px-8 mx-auto text-xs">
+	<ol class="flex items-center space-x-2">
+		<li><a href="{{ path('app_home') }}" class="text-slate-600 hover:text-red-600 transition">Accueil</a></li>
+
+		{% for crumb in breadcrumbs(page) %}
+			{% if not loop.first %}
+				<li class="text-gray-400">
+                <svg
+                             class="h-5 w-5 transform transition-transform"
+                             fill="none"
+                             stroke="currentColor"
+                             viewbox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                        </svg>
+
+                </li>
+				<li>
+					{% if crumb.is_current %}
+						<span class="text-gray-800 font-medium" aria-current="page">
+							{{ crumb.title }}
+						</span>
+					{% else %}
+						<a href="{{ crumb.url }}" class="text-gray-600 hover:text-red-600 transition">
+							{{ crumb.title }}
+						</a>
+					{% endif %}
+				</li>
+			{% endif %}
+		{% endfor %}
+	</ol>
+</nav>

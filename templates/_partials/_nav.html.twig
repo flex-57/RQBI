@@ -1,0 +1,134 @@
+<nav class="fixed text-gray-800 w-full bg-white z-100" :class="$store.admin.sidebarOpen ? 'max-w-[calc(100vw-256px)]' : ''" x-data="{ openSection: null, mobileOpen: false }" @click.outside="openSection = null">
+    <div class="shadow-lg mx-auto py-6 sm:px-30 lg:px-40 flex items-center justify-between">
+        {# Logo #}
+        <div class="">
+            <a href="{{ path('app_home') }}">
+                <img src="{{ asset('images/cropped-logo-banniere-512x193.png') }}" alt="Logo de la Régie de Quartier de Behren-lès-Forbach" width="400">
+            </a>
+        </div>
+
+        {# Desktop menu #}
+        <div class="hidden lg:flex space-x-4">
+            {% for section in full_menu() %}
+                {% if section.menuGroups|length > 0 %}
+                    <button @click.stop="openSection = (openSection === {{ loop.index0 }} ? null : {{ loop.index0 }})"
+                            class="group hover:text-gray-800 font-semibold transition duration-300 ease-in-out"
+                            :class="{'text-red-600': openSection === {{ loop.index0 }}}">
+                        <div class="h-19 flex px-4 items-center font-bold">{{ section.title|upper }}</div>
+                        <div class="w-0 h-[5px] bg-red-600 group-hover:w-full transition-all duration-300 ease-in-out"
+                             :class="{'w-full': openSection === {{ loop.index0 }}}"></div>
+                    </button>
+                {% else %}
+                    <a href="{{ path('app_page_show', {'fullSlug': section.fullSlug}) }}"
+                       class="group hover:text-gray-800 font-semibold transition duration-300 ease-in-out">
+                        <div class="h-19 flex px-4 items-center">{{ section.title|upper }}</div>
+                        <div class="w-0 h-[5px] bg-red-600 group-hover:w-full transition-all duration-300 ease-in-out"></div>
+                    </a>
+                {% endif %}
+            {% endfor %}
+        </div>
+
+        {# Hamburger #}
+        <div class="lg:hidden">
+            <button @click="mobileOpen = !mobileOpen"
+                    class="p-1 border-2 border-gray-300 hover:border-gray-500 transition duration-300 ease-in-out rounded-full text-red-600">
+                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    {# Desktop dropdown #}
+    <div x-show="openSection !== null"
+         x-cloak
+         x-transition:enter="transition ease-out duration-300"
+         x-transition:enter-start="opacity-0 transform -translate-y-2"
+         x-transition:enter-end="opacity-100 transform translate-y-0"
+         class="absolute bg-white w-screen z-50 shadow-lg border-t border-gray-300"
+         @mouseleave="openSection = null">
+        <div class="max-w-6xl mx-auto px-4 py-6 hidden lg:grid">
+            {% for i, section in full_menu() %}
+                <template x-if="openSection === {{ i }}">
+                    <div class="col-span-1 md:col-span-4 grid lg:grid-cols-4 gap-6">
+                        {% for group in section.menuGroups %}
+                            <div>
+                                <h5 class="font-semibold mb-2">
+                                    <a href="{{ path('app_page_show', {'fullSlug': group.fullSlug}) }}"
+                                       class="hover:text-red-600 transition duration-300 ease-in-out">
+                                        {{ group.title }}
+                                    </a>
+                                </h5>
+                                <ul class="space-y-1">
+                                    {% for item in group.menuItems %}
+                                        <li>
+                                            <a href="{{ path('app_page_show', {'fullSlug': item.fullSlug}) }}"
+                                               class="block text-gray-600 py-1 hover:text-red-600 hover:underline transition duration-300 ease-in-out">
+                                                {{ item.title }}
+                                            </a>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </template>
+            {% endfor %}
+        </div>
+    </div>
+
+    {# Mobile menu #}
+    <div x-show="mobileOpen"
+         x-cloak
+         x-transition:enter="transition ease-out duration-300"
+         x-transition:enter-start="opacity-0 transform -translate-y-2"
+         x-transition:enter-end="opacity-100 transform translate-y-0"
+         class="absolute w-screen z-50 bg-white lg:hidden border-t border-gray-300 shadow-lg">
+        <div class="pt-2 space-y-2" x-data="{ openMobileSection: null }">
+            {% for i, section in full_menu() %}
+                <div class="">
+                    <button @click="openMobileSection = (openMobileSection === {{ i }} ? null : {{ i }})"
+                            class="border-b border-gray-300 w-full text-left px-4 pt-3 pb-4 font-semibold flex justify-between items-center text-gray-800 hover:text-red-600 transition">
+                        <span>{{ section.title|upper }}</span>
+                        <svg :class="{'rotate-180': openMobileSection === {{ i }}}"
+                             class="h-5 w-5 transform transition-transform"
+                             fill="none"
+                             stroke="currentColor"
+                             viewbox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+
+                    {# Mobile dropdown #}
+                    <div x-show="openMobileSection === {{ i }}"
+                         x-cloak
+                         x-transition:enter="transition ease-out duration-200"
+                         x-transition:enter-start="opacity-0"
+                         x-transition:enter-end="opacity-100"
+                         class="pl-4 pb-4 border-t border-gray-300 shadow-xl">
+                        {% for group in section.menuGroups %}
+                            <div class="mt-3">
+                                <h5 class="font-semibold text-gray-800">
+                                    <a href="{{ path('app_page_show', {'fullSlug': group.fullSlug}) }}"
+                                       class="hover:text-red-600 transition duration-300 ease-in-out">
+                                        {{ group.title }}
+                                    </a>
+                                </h5>
+                                <ul class="ml-2 mt-2 space-y-1">
+                                    {% for item in group.menuItems %}
+                                        <li>
+                                            <a href="{{ path('app_page_show', {'fullSlug': item.fullSlug}) }}"
+                                               class="block text-gray-600 py-1 hover:text-red-600 hover:underline transition duration-300 ease-in-out">
+                                                {{ item.title }}
+                                            </a>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</nav>
