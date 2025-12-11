@@ -1,0 +1,14 @@
+parameters:
+  level: 7
+  paths:
+    - src
+    - tests
+    - bin
+    - config
+  bootstrapFiles:
+    - tests/bootstrap.php
+  excludePaths:
+    - vendor
+    - src/DataFixtures
+  parallel:
+    maximumNumberOfProcesses: 4

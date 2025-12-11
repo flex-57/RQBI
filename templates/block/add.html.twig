@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello BlockController!{% endblock %}
+
+{% block body %}
+    {{ form_start(form) }}
+        {{ form_row(form) }}
+        <input type="submit" value="Ajouter" />
+    {{ form_end(form) }}
+{% endblock %}

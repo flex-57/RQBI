@@ -1,0 +1,10 @@
+<div>
+    <img
+        src="{{ block.url|e }}"
+        alt="{{ block.alt|e|default('') }}"
+        loading="lazy"
+    >
+    {% if block.caption %}
+        <figcaption>{{ block.caption|e }}</figcaption>
+    {% endif %}
+</div>
