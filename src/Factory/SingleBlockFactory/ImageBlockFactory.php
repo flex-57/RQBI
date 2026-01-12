@@ -18,7 +18,8 @@ final class ImageBlockFactory implements SingleBlockFactoryInterface
         $block->setUrl($data['url'] ?? '');
         $block->setAlt($data['alt'] ?? null);
         $block->setCaption($data['caption'] ?? null);
-        $block->setIsActive((bool)($data['isActive'] ?? true));
+        $block->setIsActive((bool) ($data['isActive'] ?? true));
+
         return $block;
     }
 }

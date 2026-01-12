@@ -21,7 +21,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\HasLifecycleCallbacks]
 class Page implements \IteratorAggregate
 {
-    use TimestampableTrait, PositionableTrait;
+    use TimestampableTrait;
+    use PositionableTrait;
 
     #[ORM\Id, ORM\GeneratedValue, ORM\Column]
     /** @phpstan-ignore-next-line */
@@ -92,6 +93,7 @@ class Page implements \IteratorAggregate
     public function setTitle(string $title): static
     {
         $this->title = $title;
+
         return $this;
     }
 
@@ -103,6 +105,7 @@ class Page implements \IteratorAggregate
     public function setSlug(string $slug): static
     {
         $this->slug = $slug;
+
         return $this;
     }
 
@@ -114,6 +117,7 @@ class Page implements \IteratorAggregate
     public function setFullSlug(string $fullSlug): static
     {
         $this->fullSlug = $fullSlug;
+
         return $this;
     }
 
@@ -125,6 +129,7 @@ class Page implements \IteratorAggregate
     public function setIsHomepage(bool $isHomepage): static
     {
         $this->isHomepage = $isHomepage;
+
         return $this;
     }
 
@@ -136,6 +141,7 @@ class Page implements \IteratorAggregate
     public function setIsPublished(bool $isPublished): static
     {
         $this->isPublished = $isPublished;
+
         return $this;
     }
 
@@ -147,6 +153,7 @@ class Page implements \IteratorAggregate
     public function setIsInMainNav(bool $isInMainNav): static
     {
         $this->isInMainNav = $isInMainNav;
+
         return $this;
     }
 
@@ -158,6 +165,7 @@ class Page implements \IteratorAggregate
     public function setParent(?self $parent): static
     {
         $this->parent = $parent;
+
         return $this;
     }
 
@@ -175,6 +183,7 @@ class Page implements \IteratorAggregate
             $this->children->add($child);
             $child->setParent($this);
         }
+
         return $this;
     }
 
@@ -185,6 +194,7 @@ class Page implements \IteratorAggregate
                 $child->setParent(null);
             }
         }
+
         return $this;
     }
 
@@ -202,6 +212,7 @@ class Page implements \IteratorAggregate
             $this->blocks->add($block);
             $block->setPage($this);
         }
+
         return $this;
     }
 
@@ -212,21 +223,29 @@ class Page implements \IteratorAggregate
                 $block->setPage(null);
             }
         }
+
         return $this;
     }
 
     /**
-     * @return array<self>
+     * @return array<int, Page> Chemin du parent le plus haut à la page courante
      */
-    public function getBreadcrumbs(): array
+    public function getAncestry(): array
     {
-        $breadcrumbs = [];
+        $ancestors = [];
         $current = $this;
-        while ($current !== null) {
-            $breadcrumbs[] = $current;
+        while (null !== $current) {
+            array_unshift($ancestors, $current);
             $current = $current->getParent();
         }
-        return array_reverse($breadcrumbs);
+
+        return $ancestors;
+    }
+
+    /** @return array<int, Page> */
+    public function getBreadcrumbs(): array
+    {
+        return $this->getAncestry();
     }
 
     public function getIterator(): \Traversable

@@ -6,10 +6,10 @@ use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
-use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 #[AsCommand(
@@ -20,7 +20,7 @@ class CreateAdminCommand extends Command
 {
     public function __construct(
         private EntityManagerInterface $entityManager,
-        private UserPasswordHasherInterface $passwordHasher
+        private UserPasswordHasherInterface $passwordHasher,
     ) {
         parent::__construct();
     }
@@ -47,34 +47,34 @@ class CreateAdminCommand extends Command
 
         // --- password ---
 
-            do {
-                $passwordQuestion = new Question(
-                    'Entrez le mot de passe <comment>- Doit contenir au moins 8 caractères, une majuscule, un chiffre et un caractère spécial.</comment> : '
-                );
-                $passwordQuestion->setHidden(true);
-                $passwordQuestion->setHiddenFallback(false);
-                $password = $helper->ask($input, $output, $passwordQuestion);
+        do {
+            $passwordQuestion = new Question(
+                'Entrez le mot de passe <comment>- Doit contenir au moins 8 caractères, une majuscule, un chiffre et un caractère spécial.</comment> : '
+            );
+            $passwordQuestion->setHidden(true);
+            $passwordQuestion->setHiddenFallback(false);
+            $password = $helper->ask($input, $output, $passwordQuestion);
 
-                // --- password validation ---
-                $pattern = '/^(?=.*[A-Z])(?=.*[0-9])(?=.*[\W_]).{8,}$/';
-                if (!$password || !preg_match($pattern, $password)) {
-                    $output->writeln('<error>Mot de passe invalide, veuillez réessayez :</error>');
-                    $password = null;
-                }
-            } while (!$password);
+            // --- password validation ---
+            $pattern = '/^(?=.*[A-Z])(?=.*[0-9])(?=.*[\W_]).{8,}$/';
+            if (!$password || !preg_match($pattern, $password)) {
+                $output->writeln('<error>Mot de passe invalide, veuillez réessayez :</error>');
+                $password = null;
+            }
+        } while (!$password);
 
-            // --- confirm password ---
-            do {
-                $confirmPasswordQuestion = new Question("Répétez le mot de passe : ");
-                $confirmPasswordQuestion->setHidden(true);
-                $confirmPasswordQuestion->setHiddenFallback(false);
-                $confirmPassword = $helper->ask($input, $output, $confirmPasswordQuestion);
+        // --- confirm password ---
+        do {
+            $confirmPasswordQuestion = new Question('Répétez le mot de passe : ');
+            $confirmPasswordQuestion->setHidden(true);
+            $confirmPasswordQuestion->setHiddenFallback(false);
+            $confirmPassword = $helper->ask($input, $output, $confirmPasswordQuestion);
 
-                if ($password !== $confirmPassword) {
-                    $output->writeln('<error>Les mots de passe ne correspondent pas, veuillez réessayez.</error>');
-                    $confirmPassword = null;
-                }
-            } while (!$confirmPassword);
+            if ($password !== $confirmPassword) {
+                $output->writeln('<error>Les mots de passe ne correspondent pas, veuillez réessayez.</error>');
+                $confirmPassword = null;
+            }
+        } while (!$confirmPassword);
 
         // Delete existing admin
         $existingAdmin = $this->entityManager->getRepository(User::class)->findOneBy(['username' => $username]);
@@ -93,7 +93,7 @@ class CreateAdminCommand extends Command
         $this->entityManager->flush();
 
         $output->writeln('<info>Le nouvel administrateur a été crée avec succès !</info>');
-        $output->writeln('Nom d’utilisateur : <comment> ' . $user->getUsername() . '</comment>');
+        $output->writeln('Nom d’utilisateur : <comment> '.$user->getUsername().'</comment>');
         $output->writeln('Allez maintenant sur la page de connexion <comment>http://127.0.0.1:8000/login</comment> et connectez-vous.');
 
         return Command::SUCCESS;

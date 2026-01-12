@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 class BlockSlider extends Block
 {
     /** @var array<int, string> */
-    #[ORM\Column(type: "json")]
+    #[ORM\Column(type: 'json')]
     private array $images = [];
 
     public function getType(): BlockTypeEnum
@@ -27,6 +27,7 @@ class BlockSlider extends Block
     public function setImages(array $images): static
     {
         $this->images = $images;
+
         return $this;
     }
 }

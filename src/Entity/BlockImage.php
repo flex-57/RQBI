@@ -41,6 +41,7 @@ class BlockImage extends Block
     public function setUrl(string $url): static
     {
         $this->url = $url;
+
         return $this;
     }
 
@@ -52,6 +53,7 @@ class BlockImage extends Block
     public function setAlt(?string $alt): static
     {
         $this->alt = $alt;
+
         return $this;
     }
 
@@ -63,6 +65,7 @@ class BlockImage extends Block
     public function setCaption(?string $caption): static
     {
         $this->caption = $caption;
+
         return $this;
     }
 }

@@ -5,9 +5,11 @@ namespace App\Strategy;
 use App\Entity\Block;
 use Twig\Environment;
 
-final class DefaultTwigBlockRenderer implements BlockRendererInterface
+final class BlockDefautRenderer implements BlockRendererInterface
 {
-    public function __construct(private Environment $twig) {}
+    public function __construct(private Environment $twig)
+    {
+    }
 
     public function supports(Block $block): bool
     {

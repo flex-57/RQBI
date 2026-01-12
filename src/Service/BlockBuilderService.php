@@ -2,20 +2,21 @@
 
 namespace App\Service;
 
-use App\Factory\BlockFactoryInterface;
 use App\Entity\Enums\BlockTypeEnum;
+use App\Factory\BlockFactoryInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class BlockBuilderService
 {
     public function __construct(
         private BlockFactoryInterface $factory,
-        private ValidatorInterface $validator
-    ) {}
+        private ValidatorInterface $validator,
+    ) {
+    }
 
     /**
      * @param array<string, mixed> $data
-     * @return object
+     *
      * @throws \RuntimeException
      */
     public function build(BlockTypeEnum $type, array $data): object
