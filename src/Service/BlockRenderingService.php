@@ -28,7 +28,7 @@ class BlockRenderingService
             }
         }
 
-        return '<!-- No renderer for '. $block::class .' -->';
+        return '<!-- No renderer for '.$block::class.' -->';
     }
 
     /**
@@ -42,6 +42,7 @@ class BlockRenderingService
                 $html .= $this->render($block);
             }
         }
+
         return $html;
     }
 }

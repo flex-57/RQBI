@@ -69,6 +69,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         if (empty($this->username)) {
             throw new \LogicException('The user identifier cannot be empty.');
         }
+
         return $this->username;
     }
 

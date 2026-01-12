@@ -8,7 +8,7 @@ use App\Entity\Enums\BlockTypeEnum;
 interface BlockFactoryInterface
 {
     /**
-     * @param array<string, mixed> $data
+     * @param array<string,mixed> $data
      */
     public function create(BlockTypeEnum $type, array $data): Block;
 }

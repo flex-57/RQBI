@@ -21,7 +21,7 @@ final class PageController extends AbstractController
     public function add(
         Request $request,
         PageRepository $repository,
-        PositionManager $positionManager
+        PositionManager $positionManager,
     ): Response {
         $page = new Page();
 
@@ -31,15 +31,16 @@ final class PageController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             $page->setPosition($positionManager->getNextPosition(Page::class, ['parent' => $page->getParent()]));
 
             try {
                 $repository->save($page, true);
                 $this->addFlash('success', 'Page créée avec succès.');
+
                 return $this->redirectToRoute('app_page_show', ['fullSlug' => $page->getFullSlug()]);
             } catch (UniqueConstraintViolationException) {
                 $this->addFlash('error', 'Slug déjà utilisé. Veuillez réessayer.');
+
                 return $this->redirectToRoute('app_page_add');
             }
         }
@@ -54,7 +55,7 @@ final class PageController extends AbstractController
     public function edit(
         Page $page,
         Request $request,
-        PageRepository $repository
+        PageRepository $repository,
     ): Response {
         $form = $this->createForm(PageType::class, $page);
         $form->handleRequest($request);
@@ -63,9 +64,11 @@ final class PageController extends AbstractController
             try {
                 $repository->save($page, true);
                 $this->addFlash('success', 'Page mise à jour avec succès.');
+
                 return $this->redirectToRoute('app_page_show', ['fullSlug' => $page->getFullSlug()]);
             } catch (UniqueConstraintViolationException) {
                 $this->addFlash('error', 'Slug déjà utilisé. Veuillez réessayer.');
+
                 return $this->redirectToRoute('app_page_edit', ['id' => $page->getId()]);
             }
         }

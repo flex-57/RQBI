@@ -2,11 +2,13 @@
 
 namespace App\Controller;
 
-use App\Entity\{Block,Page};
+use App\Entity\Block;
 use App\Entity\Enums\BlockTypeEnum;
-use App\Form\BlockDynamicType;
+use App\Entity\Page;
 use App\Factory\BlockFactory;
-use App\Service\{BlockRenderingService, PositionManager};
+use App\Form\BlockDynamicType;
+use App\Service\BlockRenderingService;
+use App\Service\PositionManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,7 +26,7 @@ class BlockController extends AbstractController
         Request $request,
         BlockFactory $factory,
         PositionManager $positionManager,
-        EntityManagerInterface $em
+        EntityManagerInterface $em,
     ): Response {
         $form = $this->createForm(BlockDynamicType::class);
 
@@ -45,6 +47,7 @@ class BlockController extends AbstractController
             $em->flush();
 
             $this->addFlash('success', 'Bloc ajouté avec succès.');
+
             return $this->redirectToRoute('app_page_show', ['fullSlug' => $page->getFullSlug()]);
         }
 

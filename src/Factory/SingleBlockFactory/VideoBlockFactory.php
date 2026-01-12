@@ -17,8 +17,9 @@ class VideoBlockFactory implements SingleBlockFactoryInterface
         $block = new BlockVideo();
         $block->setUrl($data['url'] ?? '');
         $block->setFormat($data['format'] ?? '');
-        $block->setIsAutoplay((bool)($data['isAutoplay'] ?? false));
-        $block->setIsActive((bool)($data['isActive'] ?? true));
+        $block->setIsAutoplay((bool) ($data['isAutoplay'] ?? false));
+        $block->setIsActive((bool) ($data['isActive'] ?? true));
+
         return $block;
     }
 }

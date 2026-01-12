@@ -14,7 +14,8 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\HasLifecycleCallbacks]
 abstract class Block
 {
-    use TimestampableTrait, PositionableTrait;
+    use TimestampableTrait;
+    use PositionableTrait;
 
     #[ORM\Id, ORM\GeneratedValue, ORM\Column]
     protected ?int $id = null;
@@ -41,6 +42,7 @@ abstract class Block
     public function setIsActive(bool $isActive): static
     {
         $this->isActive = $isActive;
+
         return $this;
     }
 
@@ -52,6 +54,7 @@ abstract class Block
     public function setPage(?Page $page): static
     {
         $this->page = $page;
+
         return $this;
     }
 }

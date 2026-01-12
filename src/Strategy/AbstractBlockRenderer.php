@@ -7,7 +7,9 @@ use Twig\Environment;
 
 abstract class AbstractBlockRenderer implements BlockRendererInterface
 {
-    public function __construct(protected Environment $twig) {}
+    public function __construct(protected Environment $twig)
+    {
+    }
 
     public function render(Block $block): string
     {

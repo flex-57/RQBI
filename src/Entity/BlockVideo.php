@@ -36,6 +36,7 @@ class BlockVideo extends Block
     public function setUrl(string $url): static
     {
         $this->url = $url;
+
         return $this;
     }
 
@@ -47,6 +48,7 @@ class BlockVideo extends Block
     public function setFormat(VideoFormatEnum|string $format): static
     {
         $this->format = $format instanceof VideoFormatEnum ? $format : VideoFormatEnum::from($format);
+
         return $this;
     }
 
@@ -58,6 +60,7 @@ class BlockVideo extends Block
     public function setIsAutoplay(bool $isAutoplay): static
     {
         $this->isAutoplay = $isAutoplay;
+
         return $this;
     }
 }

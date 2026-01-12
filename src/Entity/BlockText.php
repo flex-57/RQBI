@@ -32,6 +32,7 @@ class BlockText extends Block
     public function setContent(string $content): static
     {
         $this->content = $content;
+
         return $this;
     }
 }

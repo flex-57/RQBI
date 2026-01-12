@@ -16,7 +16,8 @@ final class TextBlockFactory implements SingleBlockFactoryInterface
     {
         $block = new BlockText();
         $block->setContent($data['content'] ?? '');
-        $block->setIsActive((bool)($data['isActive'] ?? true));
+        $block->setIsActive((bool) ($data['isActive'] ?? true));
+
         return $block;
     }
 }

@@ -16,7 +16,8 @@ final class SliderBlockFactory implements SingleBlockFactoryInterface
     {
         $block = new BlockSlider();
         $block->setImages($data['images'] ?? []);
-        $block->setIsActive((bool)($data['isActive'] ?? true));
+        $block->setIsActive((bool) ($data['isActive'] ?? true));
+
         return $block;
     }
 }

@@ -17,6 +17,7 @@ trait PositionableTrait
     public function setPosition(int $position): static
     {
         $this->position = $position;
+
         return $this;
     }
 }
